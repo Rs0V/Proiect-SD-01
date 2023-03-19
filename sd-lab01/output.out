@@ -1,0 +1,64 @@
+T1:
+	radix_sort: 0.0997833s
+	merge_sort: 0.275983s
+	shell_sort: 0.270829s
+	count_sort: 0.0187574s
+	quick_sort1: 0.486236s
+	intro_sort: 0.345805s
+
+T2:
+	radix_sort: 1.6e-05s
+	merge_sort: 2.22e-05s
+	shell_sort: 5.2e-06s
+	count_sort: 0.214103s
+	quick_sort1: 5.02e-05s
+	intro_sort: 1.36e-05s
+
+T3:
+	radix_sort: 8.397s
+	merge_sort: 28.7107s
+	shell_sort: 36.3621s
+	count_sort: 0.411652s
+	quick_sort1: 15.8658s
+	intro_sort: 22.6191s
+
+T4:
+	radix_sort: 9.77e-05s
+	merge_sort: 0.0003324s
+	shell_sort: 8.42e-05s
+	count_sort: 0.0001382s
+	quick_sort1: 0.0009823s
+	intro_sort: 0.0001837s
+
+T5:
+	radix_sort: 4.98e-05s
+	merge_sort: 0.0001886s
+	shell_sort: 6.94e-05s
+	count_sort: 8e-06s
+	quick_sort1: 0.0001768s
+	intro_sort: 0.0001346s
+
+T6:
+	radix_sort: 4.87945s
+	merge_sort: 26.2489s
+	shell_sort: 15.2972s
+	count_sort: 0.409051s
+	quick_sort1: 7.47408s
+	intro_sort: 10.6243s
+
+T7:
+	radix_sort: 3.4e-06s
+	merge_sort: 2.2e-06s
+	shell_sort: 2.3e-06s
+	count_sort: 0.177846s
+	quick_sort1: 2.87e-05s
+	intro_sort: 5.3e-06s
+
+T8:
+	radix_sort: 0.0091728s
+	merge_sort: 0.0240068s
+	shell_sort: 0.0160579s
+	count_sort: 0.0040404s
+	quick_sort1: 0.0506685s
+	intro_sort: 0.0299602s
+

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <string>
+#include <algorithm>
 
 #define FOREX(i, _pair) for(auto i = _pair.first; i < _pair.second; ++i)
 #define FOR(i, _pair) for(auto i = _pair.first; i <= _pair.second; ++i)
@@ -197,36 +198,64 @@ void shell_sort(int* _array, std::pair<int, int> _interval)
 
 
 
-int partition(int* _array, int low, int high)
-{
-	int pivot = _array[high];
-	int i = low - 1;
-
-	for (int j = low; j <= high - 1; ++j)
-		if (_array[j] < pivot)
-		{
-			++i;
-			i = std::min(i, high);
-			std::swap(_array[i], _array[j]);
-		}
-	std::swap(_array[std::min(i + 1, high)], _array[high]);
-	
-	return i + 1;
-}
-
-void quick_sort_aux(int* _array, std::pair<int, int> _interval)
-{
-	if (_interval.first < _interval.second) {
-		int pi = partition(_array, _interval.first, _interval.second);
-
-		quick_sort_aux(_array, { _interval.first, pi - 1 });
-		quick_sort_aux(_array, { pi + 1, _interval.second });
-	}
-}
-
 void quick_sort(int* _array, std::pair<int, int> _interval)
 {
-	quick_sort_aux(_array, { _interval.first, _interval.second - 1 });
+	if (_interval.second - _interval.first <= 1)
+		return;
+
+	std::uniform_int_distribution<std::mt19937::result_type> dist(_interval.first, _interval.second - 1);
+
+	int p[3] = { dist(rng), dist(rng), dist(rng) };
+	int pivot = (p[0] + p[1] + p[2]) / 3;
+	pivot = _array[pivot];
+	int equals_pivot = 0;
+
+	int* l = new int[_interval.second - _interval.first];
+	int* g = new int[_interval.second - _interval.first];
+	int li = 0, gi = 0;
+	FOREX(i, _interval)
+	{
+		if (_array[i] < pivot)
+		{
+			l[li] = _array[i];
+			++li;
+		}
+		else if (_array[i] > pivot)
+		{
+			g[gi] = _array[i];
+			++gi;
+		}
+		else
+			++equals_pivot;
+	}
+
+	int k = 0;
+	if (li > 0)
+	{
+		quick_sort(l, { 0, li });
+		for (int i = 0; i < li; ++i)
+		{
+			_array[k] = l[i];
+			++k;
+		}
+	}
+	while (equals_pivot)
+	{
+		_array[k] = pivot;
+		++k;
+		--equals_pivot;
+	}
+	if (gi > 0)
+	{
+		quick_sort(g, { 0, gi });
+		for (int i = 0; i < gi; ++i)
+		{
+			_array[k] = g[i];
+			++k;
+		}
+	}
+	delete[] l;
+	delete[] g;
 }
 
 
@@ -266,6 +295,22 @@ int main()
 			std::cout << sorts_names[j] << ": finished!\n\n";
 
 			delete[] a_copy;
+		}
+		{
+			auto t0 = std::chrono::system_clock::now();
+			std::sort(a, a + array_size);
+			auto t1 = std::chrono::system_clock::now();
+
+			output << "\tintro_sort: ";
+			if (is_sorted(a, { 0, array_size }))
+			{
+				std::chrono::duration<double> time = t1 - t0;
+				output << time.count() << "s\n";
+			}
+			else
+				output << "Sort Failed\n";
+
+			std::cout << "intro_sort: finished!\n\n";
 		}
 		output << '\n';
 		std::cout << 'T' << i + 1 << ": finished!\n\n\n\n";
