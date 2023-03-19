@@ -265,16 +265,17 @@ int main()
 	int tests, array_size, max_nr;
 	input >> tests;
 
+	SORT_PTR(sorts[]) = { radix_sort, merge_sort, shell_sort, count_sort, quick_sort };
+	std::string sorts_names[] = { "radix_sort", "merge_sort", "shell_sort", "count_sort", "quick_sort" };
+	int nr_sorts = sizeof(sorts) / sizeof(SORT_PTR());
+	double* medie_timpi = new double[nr_sorts + 1] { 0 };
+
 	for (int i = 0; i < tests; ++i)
 	{
 		input >> array_size >> max_nr;
 		int* a = rand_uint_array(array_size, max_nr);
-
-		SORT_PTR(sorts[]) = { radix_sort, merge_sort, shell_sort, count_sort, quick_sort };
-		std::string sorts_names[] = {"radix_sort", "merge_sort", "shell_sort", "count_sort", "quick_sort" };
 		
 		output << 'T' << i + 1 << ":\n";
-		int nr_sorts = sizeof(sorts) / sizeof(SORT_PTR());
 		for (int j = 0; j < nr_sorts; ++j)
 		{
 			int* a_copy = create_array_copy(a, array_size);
@@ -288,6 +289,7 @@ int main()
 			{
 				std::chrono::duration<double> time = t1 - t0;
 				output << time.count() << "s\n";
+				medie_timpi[j] += time.count();
 			}
 			else
 				output << "Sort Failed\n";
@@ -296,6 +298,7 @@ int main()
 
 			delete[] a_copy;
 		}
+		// INTRO SORT
 		{
 			auto t0 = std::chrono::system_clock::now();
 			std::sort(a, a + array_size);
@@ -306,6 +309,7 @@ int main()
 			{
 				std::chrono::duration<double> time = t1 - t0;
 				output << time.count() << "s\n";
+				medie_timpi[nr_sorts] += time.count();
 			}
 			else
 				output << "Sort Failed\n";
@@ -317,5 +321,17 @@ int main()
 
 		delete[] a;
 	}
+	// AFISEAZA MEDIA DE TIMP PT. FIECARE ALGORITM
+	output << "Medie de timp:\n";
+	for (int i = 0; i < nr_sorts; ++i)
+	{
+		medie_timpi[i] /= tests;
+		output << '\t' << sorts_names[i] << ": " << medie_timpi[i] << "s\n";
+	}
+	medie_timpi[nr_sorts] /= tests;
+	output << "\tintro_sort: " << medie_timpi[nr_sorts] << "s\n";
+
+	delete[] medie_timpi;
+
 	return 0;
 }
